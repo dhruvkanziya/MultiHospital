@@ -16,14 +16,13 @@
 | environments.
 |
 */
-if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
-
-    $ht = "https://";
+if (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://" : "http://";
+    $config['base_url'] = $protocol . $_SERVER['HTTP_HOST'] . preg_replace('@/+$@','', dirname($_SERVER['SCRIPT_NAME'])) . '/';
 } else {
-	$ht = "http://";
+    $config['base_url'] = 'https://multihospital-production.up.railway.app/';
 }
-$config['base_url'] = $ht.$_SERVER['HTTP_HOST'];
-$config['base_url'] .= preg_replace('@/+$@','',dirname($_SERVER['SCRIPT_NAME'])).'/'; 
+
 
 
 /*
